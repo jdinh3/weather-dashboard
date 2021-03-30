@@ -6,3 +6,19 @@ ol li {
     list-style-type: none;
     padding: 10px;
 }
+
+.green {
+    background-color: green;
+}
+
+.yellow {
+    background-color: yellow;
+}
+
+.red {
+    background-color: red;
+}
+
+.card-body{
+    margin-right: 10px;
+}

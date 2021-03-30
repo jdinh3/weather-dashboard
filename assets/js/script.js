@@ -1,3 +1,4 @@
+// Dom Variables
 var searchForm = $("#search-form");
 var searchTermEl = $("#search-term");
 var tempEl = $("#temp-overview");
@@ -6,7 +7,12 @@ var humidityEl = $("#humidity-overview");
 var windSpeedEl = $("#windspeed-overview");
 var uvIndexEl = $("#uvindex-overview");
 var cityEl = $("#city-name");
+var cardDateEl = $(".card-date");
+var cardIconEl = $(".card-icon");
+var cardTempEl = $(".temp");
+var cardHumidityEl = ".humidity";
 
+// Event Listener for submit button
 searchForm.on("submit", function (event) {
   event.preventDefault();
   var searchTerm = searchTermEl.val();
@@ -19,6 +25,7 @@ searchForm.on("submit", function (event) {
     "&units=imperial&appid=" +
     apiKey;
 
+  // Data for the current weather overview
   fetch(queryURL)
     .then(function (response) {
       return response.json();
@@ -33,15 +40,16 @@ searchForm.on("submit", function (event) {
       var iconEl = $("<img>");
 
       //   iconEl.attr("src", data.weather[0].icon);
-      city.text = searchTerm;
-      temperatureEl.text = "Temperature: " + data.main.temp + "°";
+      city.text = data.name;
+      temperatureEl.text = "Temperature: " + data.main.temp + "°F";
       humidEl.text = "Humidity: " + data.main.humidity + "%";
-      windEl.text = "Wind Speed: " + data.wind.speed + " mph";
+      windEl.text = "Wind Speed: " + data.wind.speed + " MPH";
       cityEl.text(city.text);
       tempEl.text(temperatureEl.text);
       humidityEl.text(humidEl.text);
       windSpeedEl.text(windEl.text);
 
+      // Data for the UV index in the current weather overview
       var uvURL =
         "https://api.openweathermap.org/data/2.5/uvi?lat=" +
         data.coord.lat +
@@ -58,6 +66,61 @@ searchForm.on("submit", function (event) {
           var uvEl = $("<li>");
           uvEl.text = "UV Index: " + data.value;
           uvIndexEl.text(uvEl.text);
+
+          if (data.value >= 6) {
+            uvIndexEl.addClass("red");
+          } else if (data.value >= 3 || data.value <= 5) {
+            uvIndexEl.addClass("yellow");
+          } else if (data.value <= 2) {
+            uvIndexEl.addClass("green");
+          }
         });
     });
+
+  // 5-day Forecast
+  var forecastURL =
+    "https://api.openweathermap.org/data/2.5/forecast?q=" +
+    searchTerm +
+    "&units=imperial&appid=" +
+    apiKey;
+
+  fetch(forecastURL)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      console.log(typeof data);
+      console.log(data);
+      let card_index = 0;
+
+      // for loop to generate info in the 5-day forecast
+      for (var i = 0; i < data.list.length; i++) {
+        if (data.list[i].dt_txt.includes("15:00:00")) {
+          console.log(data.list[i]);
+          var icon = data.list[i].weather[0].icon;
+          var iconURL = `http://openweathermap.org/img/w/${icon}.png`;
+          var temp = data.list[i].main.temp;
+          var date = data.list[i].dt_txt;
+          var humidity = data.list[i].main.humidity;
+          $(cardIconEl[card_index]).attr("src", iconURL);
+          date = moment(date, "YYYY-MM-DD HH:mm").format("dddd, MMMM Do");
+          $(cardTempEl).text("Temperature: " + temp + "°F");
+          $(cardDateEl[card_index]).text(date);
+          $(cardHumidityEl).text("Humidity: " + humidity);
+          card_index++;
+        }
+      }
+    });
 });
+
+// local storage function
+function setCity(city) {
+  let cities = JSON.parse(localStorage.getItem("cities"));
+
+  if (!cities) {
+    cities = [];
+  }
+}
+
+//this runs on the page loading in initially
+function getCities() {}
