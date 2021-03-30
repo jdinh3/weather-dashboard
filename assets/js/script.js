@@ -1,5 +1,11 @@
 var searchForm = $("#search-form");
 var searchTermEl = $("#search-term");
+var tempEl = $("#temp-overview");
+var overviewEl = $("#overview-list");
+var humidityEl = $("#humidity-overview");
+var windSpeedEl = $("#windspeed-overview");
+var uvIndexEl = $("#uvindex-overview");
+var cityEl = $("#city-name");
 
 searchForm.on("submit", function (event) {
   event.preventDefault();
@@ -19,5 +25,21 @@ searchForm.on("submit", function (event) {
     })
     .then(function (data) {
       console.log(data);
+
+      var city = $("<h4>");
+      var temperatureEl = $("<li>");
+      var humidEl = $("<li>");
+      var windEl = $("<li>");
+      var iconEl = $("<img>");
+      var uvEl = $("<li>");
+      //   iconEl.attr("src", data.weather[0].icon);
+      city.text = searchTerm;
+      temperatureEl.text = "Temperature: " + data.main.temp + "°";
+      humidEl.text = "Humidity: " + data.main.humidity + "%";
+      windEl.text = "Wind Speed: " + data.wind.speed + " mph";
+      cityEl.text(city.text);
+      tempEl.text(temperatureEl.text);
+      humidityEl.text(humidEl.text);
+      windSpeedEl.text(windEl.text);
     });
 });

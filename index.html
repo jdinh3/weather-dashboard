@@ -70,28 +70,49 @@
       <!-- weather overview section -->
       <section class="col-8 section-right m-3">
         <section class="weather-overview p-3">
-          <h4>weather information will go here</h4>
-          <ol>
-            <li>Temperature:</li>
-            <li>Humidity:</li>
-            <li>Wind Speed:</li>
-            <li>UV Index:</li>
+          <h4 id="city-name"></h4>
+          <ol id="overview-list">
+            <li id="temp-overview"></li>
+            <li id="humidity-overview"></li>
+            <li id="windspeed-overview"></li>
+            <li id="uvindex-overview"></li>
           </ol>
         </section>
         <!-- 5-day forecast section -->
-        <section class="daily-weather">
-          <div class="cards-container">
-            <h5>5-Day Forecast:</h5>
-            <div
-              class="card text-white bg-primary mb-3"
-              style="max-width: 11rem"
-            >
-              <div class="card-header">Date goes here</div>
-              <div class="card-body">
-                <h5 class="card-icon">Icon</h5>
-                <p class="temp">Temp:</p>
-                <p class="humidiyt">Humidity:</p>
-              </div>
+        <section class="daily-weather m-2">
+          <h5>5-Day Forecast:</h5>
+          <div
+            class="card-container text-white bg-primary mb-3 d-flex flex-row"
+          >
+            <div class="card-body">
+              <h5 class="card-date">Date</h5>
+              <p class="card-icon">Icon</p>
+              <p class="temp">Temp:</p>
+              <p class="humidity">Humidity:</p>
+            </div>
+            <div class="card-body">
+              <h5 class="card-date">Date</h5>
+              <p class="card-icon">Icon</p>
+              <p class="temp">Temp:</p>
+              <p class="humidity">Humidity:</p>
+            </div>
+            <div class="card-body">
+              <h5 class="card-date">Date</h5>
+              <p class="card-icon">Icon</p>
+              <p class="temp">Temp:</p>
+              <p class="humidity">Humidity:</p>
+            </div>
+            <div class="card-body">
+              <h5 class="card-date">Date</h5>
+              <p class="card-icon">Icon</p>
+              <p class="temp">Temp:</p>
+              <p class="humidity">Humidity:</p>
+            </div>
+            <div class="card-body">
+              <h5 class="card-date">Date</h5>
+              <p class="card-icon">Icon</p>
+              <p class="temp">Temp:</p>
+              <p class="humidity">Humidity:</p>
             </div>
           </div>
         </section>
