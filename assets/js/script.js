@@ -31,7 +31,7 @@ searchForm.on("submit", function (event) {
       var humidEl = $("<li>");
       var windEl = $("<li>");
       var iconEl = $("<img>");
-      var uvEl = $("<li>");
+
       //   iconEl.attr("src", data.weather[0].icon);
       city.text = searchTerm;
       temperatureEl.text = "Temperature: " + data.main.temp + "°";
@@ -41,5 +41,23 @@ searchForm.on("submit", function (event) {
       tempEl.text(temperatureEl.text);
       humidityEl.text(humidEl.text);
       windSpeedEl.text(windEl.text);
+
+      var uvURL =
+        "https://api.openweathermap.org/data/2.5/uvi?lat=" +
+        data.coord.lat +
+        "&lon=" +
+        data.coord.lon +
+        "&appid=" +
+        apiKey;
+
+      fetch(uvURL)
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          var uvEl = $("<li>");
+          uvEl.text = "UV Index: " + data.value;
+          uvIndexEl.text(uvEl.text);
+        });
     });
 });
