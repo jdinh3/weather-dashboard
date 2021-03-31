@@ -10,13 +10,18 @@ var cityEl = $("#city-name");
 var cardDateEl = $(".card-date");
 var cardIconEl = $(".card-icon");
 var cardTempEl = $(".temp");
-var cardHumidityEl = ".humidity";
+var cardHumidityEl = $(".humidity");
+var iconEl = $("#icon");
+var cities = [];
+var searchBtn = $(".searchBtn");
 
 // Event Listener for submit button
 searchForm.on("submit", function (event) {
   event.preventDefault();
   var searchTerm = searchTermEl.val();
-  console.log(searchTerm);
+  cities.push(searchTerm);
+  localStorage.setItem("cities", JSON.stringify(cities));
+  setCity();
 
   var apiKey = "e919f026e83901dae380556be5bccfeb";
   var queryURL =
@@ -37,10 +42,11 @@ searchForm.on("submit", function (event) {
       var temperatureEl = $("<li>");
       var humidEl = $("<li>");
       var windEl = $("<li>");
-      var iconEl = $("<img>");
 
       //   iconEl.attr("src", data.weather[0].icon);
-      city.text = data.name;
+      currentDate = moment().format("L");
+      city.text = data.name + " (" + currentDate + ")";
+
       temperatureEl.text = "Temperature: " + data.main.temp + "°F";
       humidEl.text = "Humidity: " + data.main.humidity + "%";
       windEl.text = "Wind Speed: " + data.wind.speed + " MPH";
@@ -101,12 +107,14 @@ searchForm.on("submit", function (event) {
           var iconURL = `http://openweathermap.org/img/w/${icon}.png`;
           var temp = data.list[i].main.temp;
           var date = data.list[i].dt_txt;
-          var humidity = data.list[i].main.humidity;
+          var humidity = data.list[i].main.humidity + "%";
           $(cardIconEl[card_index]).attr("src", iconURL);
+          //   overview icon
+          $(iconEl).attr("src", iconURL);
           date = moment(date, "YYYY-MM-DD HH:mm").format("dddd, MMMM Do");
-          $(cardTempEl).text("Temperature: " + temp + "°F");
+          $(cardTempEl[card_index]).text("Temperature: " + temp + "°F");
           $(cardDateEl[card_index]).text(date);
-          $(cardHumidityEl).text("Humidity: " + humidity);
+          $(cardHumidityEl[card_index]).text("Humidity: " + humidity);
           card_index++;
         }
       }
@@ -114,13 +122,15 @@ searchForm.on("submit", function (event) {
 });
 
 // local storage function
-function setCity(city) {
+function setCity() {
   let cities = JSON.parse(localStorage.getItem("cities"));
-
-  if (!cities) {
+  if (cities === null) {
     cities = [];
   }
+  for (i = 0; i < cities.length; i++) {
+    $(searchBtn[i]).text(cities[i]);
+  }
+  searchBtn.on("click", function () {
+    console.log(searchBtn.text);
+  });
 }
-
-//this runs on the page loading in initially
-function getCities() {}

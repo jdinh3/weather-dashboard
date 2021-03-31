@@ -1,10 +1,10 @@
-.weather-overview {
-    border: 1px solid gray;
-}
-
 ol li {
     list-style-type: none;
     padding: 10px;
+}
+
+.weather-overview {
+    border: 1px solid gray;
 }
 
 .green {
