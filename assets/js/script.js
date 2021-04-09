@@ -12,17 +12,19 @@ var cardIconEl = $(".card-icon");
 var cardTempEl = $(".temp");
 var cardHumidityEl = $(".humidity");
 var iconEl = $("#icon");
-var cities = [];
-var searchBtn = $(".searchBtn");
+//var cities = [];
+const searchContainer = $("#searchContainer");
 
 // Event Listener for submit button
 searchForm.on("submit", function (event) {
   event.preventDefault();
   var searchTerm = searchTermEl.val();
-  cities.push(searchTerm);
-  localStorage.setItem("cities", JSON.stringify(cities));
-  setCity();
+  if (searchTerm) {
+    apiCalls(searchTerm);
+  }
+});
 
+function apiCalls(searchTerm) {
   var apiKey = "e919f026e83901dae380556be5bccfeb";
   var queryURL =
     "https://api.openweathermap.org/data/2.5/weather?q=" +
@@ -42,7 +44,7 @@ searchForm.on("submit", function (event) {
       var temperatureEl = $("<li>");
       var humidEl = $("<li>");
       var windEl = $("<li>");
-
+      setCity(searchTerm);
       //   iconEl.attr("src", data.weather[0].icon);
       currentDate = moment().format("L");
       city.text = data.name + " (" + currentDate + ")";
@@ -119,18 +121,52 @@ searchForm.on("submit", function (event) {
         }
       }
     });
-});
-
+}
 // local storage function
-function setCity() {
+// Generates the button when user presses search
+function setCity(city) {
   let cities = JSON.parse(localStorage.getItem("cities"));
   if (cities === null) {
     cities = [];
   }
-  for (i = 0; i < cities.length; i++) {
-    $(searchBtn[i]).text(cities[i]);
+
+  if(!cities.includes(city)){
+  cities.push(city);
+  localStorage.setItem("cities", JSON.stringify(cities));
+  let searchBtn = $("<a>")
+    .attr("href", "#")
+    .addClass("searchBtn list-group-item list-group-item-action");
+  searchBtn.text(city);
+  searchContainer.append(searchBtn);
   }
-  searchBtn.on("click", function () {
-    console.log(searchBtn.text);
-  });
 }
+
+// generates the buttons when page reloads
+function getCities() {
+  let cities = JSON.parse(localStorage.getItem("cities"));
+  if (cities) {
+    for (i = 0; i < cities.length; i++) {
+      let searchBtn = $("<a>")
+        .attr("href", "#")
+        .addClass("searchBtn list-group-item list-group-item-action");
+      searchBtn.text(cities[i]);
+      searchContainer.append(searchBtn);
+    }
+  }
+}
+
+getCities();
+
+$("#searchContainer").on("click", function (event) {
+  console.log(event.target);
+
+  //this may not be a button but that's what we need, we're getting the element we're targeting with searchContainer which may be the container itself -> not what we want
+  const button = event.target;
+  //if the element has text, it's a button, we're good
+  const text = button.textContent;
+
+  //if text is TRUE then it has text, meaning it's a button for the city
+  if (text) {
+    apiCalls(text);
+  }
+});
