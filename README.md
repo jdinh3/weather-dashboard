@@ -9,7 +9,7 @@ This is a weather dashboard that allows the user to search the current weather a
 
 ## Technologies
 
-This app utilizes multiple endpoints from the Open Weather Map data API (Current Weather Data, UV Index, and 5 day Forecast). Other technologies used to create this application include HTML, CSS, JavaScript, Bootstrap, and Moment JS. Previous searches are also saved into Local Storage then generated as button to easily view your recent searches again.
+This app utilizes multiple endpoints from the Open Weather Map data API (Current Weather Data, UV Index, and 5 day Forecast). Other technologies used to create this application include HTML, CSS, JavaScript, Bootstrap, and Moment JS. Previous searches are also saved into Local Storage then generated as buttons to easily view your recent searches again.
 
 ## Screenshot
 
